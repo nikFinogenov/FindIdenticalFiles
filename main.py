@@ -4,16 +4,16 @@ import argparse
 
 #dirpath = '/users/nikfin/Desktop/testFolder'
 fileList = []
-#dirpath = argv[1]
+dirpath = argv[1]
 parser = argparse.ArgumentParser(
     prog='Find Identical Files script',
     description='You should execute script like this "python main.py /directory"',
     epilog='(c) Author NikFin'
 )
-#parser.add_argument('-d', '--directory', help='directory for finding')
+parser.add_argument('-d', '--directory', help='directory for finding')
+
 parser.add_argument('path')
 args = parser.parse_args()
-
 dirpath = args.path
 
 
@@ -33,24 +33,24 @@ def allFiles(path):
         if os.path.isdir(file):
             allFiles(file)
         elif os.path.isfile(file):
-            fileList.append(os.path.basename(file))
+            fileList.append(f'{path}/{os.path.basename(file).lower()}')
     return fileList
 
-def checkDuplicates(list):
-    if len(list) == len(set(list)):
-        return False
-    else:
-        return True
+def output(list):
+    for i in list:
+        print(i)
+
+def sortPathList(elem):
+    return os.path.basename(elem)
 
 def FiF():
-    file_list = list(map(lambda x: x.lower(), sorted(allFiles(dirpath))))
-    #seen = set()
-    dupes = []
-    #dupes = [x for x in file_list if x in seen or seen.add(x)]
-    for i in range(len(file_list)-1):
-        if file_list[i] == file_list[i+1]:
-            dupes.append(file_list[i])
-    print(dupes)
+    file_list = list(sorted(allFiles(dirpath), key=sortPathList))
+    tmp = list(map(lambda x: os.path.basename(x), file_list))
+    duples = []
+    for i in range(len(file_list) - 1):
+        if tmp.count(tmp[i]) > 1:
+            duples.append(file_list[i])
+    output(duples)
 
 if __name__ == '__main__':
     FiF()
