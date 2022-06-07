@@ -1,9 +1,9 @@
 import os
 from sys import argv
 import argparse
-
 #dirpath = '/users/nikfin/Desktop/testFolder'
 fileList = []
+fileListOrigin = []
 dirpath = argv[1]
 parser = argparse.ArgumentParser(
     prog='Find Identical Files script',
@@ -34,6 +34,7 @@ def allFiles(path):
             allFiles(file)
         elif os.path.isfile(file):
             fileList.append(f'{path}/{os.path.basename(file).lower()}')
+            fileListOrigin.append(f'{path}/{os.path.basename(file)}')
     return fileList
 
 def output(list):
@@ -41,16 +42,20 @@ def output(list):
         print(i)
 
 def sortPathList(elem):
-    return os.path.basename(elem)
+    return os.path.basename(elem).lower()
 
 def FiF():
-    file_list = list(sorted(allFiles(dirpath), key=sortPathList))
+    file_list = sorted(allFiles(dirpath), key=sortPathList)
+    file_list_origin = sorted(fileListOrigin, key=sortPathList)
     tmp = list(map(lambda x: os.path.basename(x), file_list))
     duples = []
     for i in range(len(file_list) - 1):
         if tmp.count(tmp[i]) > 1:
-            duples.append(file_list[i])
+            duples.append(file_list_origin[i])
     output(duples)
+
+
+
 
 if __name__ == '__main__':
     FiF()
