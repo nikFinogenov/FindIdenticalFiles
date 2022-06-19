@@ -1,16 +1,19 @@
 import os
 from sys import argv
 import argparse
+from FiF import File
+from FiF import Folder
+
 #dirpath = '/users/nikfin/Desktop/testFolder'
 fileList = []
 fileListOrigin = []
-dirpath = argv[1]
+#dirpath = argv[1]
 parser = argparse.ArgumentParser(
     prog='Find Identical Files script',
     description='You should execute script like this "python main.py /directory"',
     epilog='(c) Author NikFin'
 )
-parser.add_argument('-d', '--directory', help='directory for finding')
+#parser.add_argument('-d', '--directory', help='directory for finding')
 
 parser.add_argument('path')
 args = parser.parse_args()
@@ -58,6 +61,10 @@ def FiF():
 
 
 if __name__ == '__main__':
-    FiF()
+    x = Folder(dirpath)
+    x.sort()
+    x.findDubl()
+    for i in x.duples:
+        print(i.path)
 
 
