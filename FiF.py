@@ -6,7 +6,7 @@ import hashlib
 
 parser = argparse.ArgumentParser(
     prog='Find Identical Files script',
-    description='You should execute script like this "python main.py /directory"',
+    description='You should execute script like this "python FiF.py /directory"',
     epilog='(c) Author NikFin'
 )
 
