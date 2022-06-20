@@ -13,13 +13,14 @@ parser = argparse.ArgumentParser(
     description='You should execute script like this "python main.py /directory"',
     epilog='(c) Author NikFin'
 )
-#parser.add_argument('-d', '--directory', help='directory for finding')
-
 parser.add_argument('path')
+parser.add_argument('-s', '--secret', help='include secret files', action='store_true')
+#parser.add_argument('-include', '--secret', help='include secret files', action='store_true')
+
 args = parser.parse_args()
 dirpath = args.path
-
-
+if args.secret:
+    print('secret files included')
 
 def isImageOrFolder(path, file):
     return file.lower().endswith(('.png', '.jpg', '.jpeg')) or os.path.isdir(f'{path}/{file}')
