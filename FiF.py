@@ -10,8 +10,9 @@ parser = argparse.ArgumentParser(
     epilog='(c) Author NikFin'
 )
 
-parser.add_argument('-s', '--secret', help='include secret files', action='store_true')
+parser.add_argument('-s', '--hidden', help='include hidden files', action='store_true')
 parser.add_argument('-o', '--output', help='show table on exit', action='store_true')
+parser.add_argument('-d', '--delimiter', help='update delimiter for default output', type=str, default='\t')
 parser.add_argument('path')
 
 args = parser.parse_args()
@@ -22,7 +23,7 @@ dirpath = args.path
 def listdir_nohidden(path):
     dirList = []
     for f in os.listdir(path):
-        if not f.startswith('.') or args.secret:
+        if not f.startswith('.') or args.hidden:
             dirList.append(f'{path}/{f}')
     return dirList
 
@@ -61,9 +62,13 @@ class Folder:
             if tmp.count(tmp[i]) > 1:
                 self.duples.append(self.fileList[i])
 
+    def default_output(self):
+        for i in self.duples:
+            print(i.name,args.delimiter,i.path,args.delimiter,md5(i.path),args.delimiter,i.creationTime)
+
     def output(self):
         t = Texttable()
-        t.set_cols_width([15,50,40,20])
+        t.set_cols_width([15, 50, 40, 20])
         t.add_row(["File name", "Path", "Md5", "Creation Time"])
         for i in self.duples:
             t.add_row([i.name, i.path, md5(i.path), i.creationTime])
@@ -74,3 +79,5 @@ if __name__ == '__main__':
     x.findDubl()
     if args.output:
         x.output()
+    else:
+        x.default_output()
