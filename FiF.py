@@ -1,26 +1,10 @@
 import os
 from datetime import datetime
-import argparse
 from texttable import Texttable
 import hashlib
 
-parser = argparse.ArgumentParser(
-    prog='Find Identical Files script',
-    description='You should execute script like this "python FiF.py /directory"',
-    epilog='(c) Author NikFin'
-)
 
-parser.add_argument('-s', '--hidden', help='include hidden files', action='store_true')
-parser.add_argument('-o', '--output', help='show table on exit', action='store_true')
-parser.add_argument('-d', '--delimiter', help='update delimiter for default output', type=str, default='\t')
-parser.add_argument('path')
-
-args = parser.parse_args()
-dirpath = args.path
-
-
-
-def listdir_nohidden(path):
+def listdir_nohidden(path, args):
     dirList = []
     for f in os.listdir(path):
         if not f.startswith('.') or args.hidden:
@@ -44,11 +28,11 @@ class File:
 class Folder:
     fileList = []
     folderList = []
-    def __init__(self, path):
+    def __init__(self, path, args):
         self.path = path
-        for item in listdir_nohidden(path):
+        for item in listdir_nohidden(path, args):
             if os.path.isdir(item):
-                self.folderList.append(Folder(f'{path}/{os.path.basename(item)}'))
+                self.folderList.append(Folder(f'{path}/{os.path.basename(item)}', args))
             elif os.path.isfile(item):
                 self.fileList.append(File(f'{path}/{os.path.basename(item)}'))
 
@@ -62,7 +46,7 @@ class Folder:
             if tmp.count(tmp[i]) > 1:
                 self.duples.append(self.fileList[i])
 
-    def default_output(self):
+    def default_output(self, args):
         for i in self.duples:
             print(i.name,args.delimiter,i.path,args.delimiter,md5(i.path),args.delimiter,i.creationTime)
 
@@ -73,11 +57,3 @@ class Folder:
         for i in self.duples:
             t.add_row([i.name, i.path, md5(i.path), i.creationTime])
         print(t.draw())
-if __name__ == '__main__':
-    x = Folder(dirpath)
-    x.sort()
-    x.findDubl()
-    if args.output:
-        x.output()
-    else:
-        x.default_output()
