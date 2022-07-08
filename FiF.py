@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from texttable import Texttable
 import hashlib
+from tqdm import tqdm
 
 
 def listdir_nohidden(path, args):
@@ -39,12 +40,19 @@ class Folder:
     def sort(self):
         self.fileList.sort(key=lambda x: x.nameLower)
 
-    def findDubl(self):
+    def findDubl(self, args):
         tmp = list(map(lambda x: x.nameLower, self.fileList))
         self.duples = []
-        for i in range(len(self.fileList) - 1):
-            if tmp.count(tmp[i]) > 1:
-                self.duples.append(self.fileList[i])
+        if not args.silent:
+            print('The program started working')
+            for i in tqdm(range(len(self.fileList) - 1)):
+                if tmp.count(tmp[i]) > 1:
+                    self.duples.append(self.fileList[i])
+            print('The program stopped working')
+        else:
+            for i in range(len(self.fileList) - 1):
+                if tmp.count(tmp[i]) > 1:
+                    self.duples.append(self.fileList[i])
 
     def default_output(self, args):
         for i in self.duples:
@@ -57,3 +65,4 @@ class Folder:
         for i in self.duples:
             t.add_row([i.name, i.path, md5(i.path), i.creationTime])
         print(t.draw())
+
