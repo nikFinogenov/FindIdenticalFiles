@@ -20,8 +20,7 @@ dirpath = args.path
 if __name__ == '__main__':
     try:
         x = Folder(dirpath, args)
-        x.sort()
-        x.findDubl(args)
+        x.Alex(args)
         if args.output:
             x.output()
         else:

@@ -37,32 +37,36 @@ class Folder:
             elif os.path.isfile(item):
                 self.fileList.append(File(f'{path}/{os.path.basename(item)}'))
 
-    def sort(self):
-        self.fileList.sort(key=lambda x: x.nameLower)
-
-    def findDubl(self, args):
-        tmp = list(map(lambda x: x.nameLower, self.fileList))
-        self.duples = []
+    def Alex(self, args):
+        self.res = {}
         if not args.silent:
-            print('The program started working')
-            for i in tqdm(range(len(self.fileList) - 1)):
-                if tmp.count(tmp[i]) > 1:
-                    self.duples.append(self.fileList[i])
-            print('The program stopped working')
+            print('looking for all dubles started')
+            for item in tqdm(range(len(self.fileList) - 1)):
+                if self.res.get(self.fileList[item].nameLower):
+                    self.res[self.fileList[item].nameLower].append(self.fileList[item])
+                else:
+                    self.res[self.fileList[item].nameLower] = [self.fileList[item]]
+            print('All dubles found')
         else:
-            for i in range(len(self.fileList) - 1):
-                if tmp.count(tmp[i]) > 1:
-                    self.duples.append(self.fileList[i])
+            for item in range(len(self.fileList) - 1):
+                if self.res.get(self.fileList[item].nameLower):
+                    self.res[self.fileList[item].nameLower].append(self.fileList[item])
+                else:
+                    self.res[self.fileList[item].nameLower] = [self.fileList[item]]
 
     def default_output(self, args):
-        for i in self.duples:
-            print(i.name,args.delimiter,i.path,args.delimiter,md5(i.path),args.delimiter,i.creationTime)
+        for value in self.res.values():
+            if len(value) > 2:
+                for i in value:
+                    print(i.name, args.delimiter, i.path, args.delimiter, md5(i.path), args.delimiter, i.creationTime)
 
     def output(self):
         t = Texttable()
         t.set_cols_width([15, 50, 40, 20])
         t.add_row(["File name", "Path", "Md5", "Creation Time"])
-        for i in self.duples:
-            t.add_row([i.name, i.path, md5(i.path), i.creationTime])
+        for value in self.res.values():
+            if len(value) > 2:
+                for i in value:
+                    t.add_row([i.name, i.path, md5(i.path), i.creationTime])
         print(t.draw())
 
