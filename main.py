@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import argparse
+
+import FiF
 from FiF import Folder
 
 parser = argparse.ArgumentParser(
@@ -28,6 +30,6 @@ if __name__ == '__main__':
     except FileNotFoundError as error:
         print(error)
         parser.print_usage()
-    #except:
-    #    print("Something else went wrong")
+    except:
+       print("Something else went wrong")
 
