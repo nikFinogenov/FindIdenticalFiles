@@ -37,16 +37,16 @@ class Folder:
             elif os.path.isfile(item):
                 self.fileList.append(File(f'{path}/{os.path.basename(item)}'))
 
-    def Alex(self, args):
+    def find_dupl(self, args):
         self.res = {}
         if not args.silent:
-            print('looking for all dubles started')
+            print('looking for duplicates started')
             for item in tqdm(range(len(self.fileList) - 1)):
                 if self.res.get(self.fileList[item].nameLower):
                     self.res[self.fileList[item].nameLower].append(self.fileList[item])
                 else:
                     self.res[self.fileList[item].nameLower] = [self.fileList[item]]
-            print('All dubles found')
+            print('All duplicates found')
         else:
             for item in range(len(self.fileList) - 1):
                 if self.res.get(self.fileList[item].nameLower):
