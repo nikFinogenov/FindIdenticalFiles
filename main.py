@@ -20,7 +20,7 @@ dirpath = args.path
 if __name__ == '__main__':
     try:
         x = Folder(dirpath, args)
-        x.Alex(args)
+        x.find_dupl(args)
         if args.output:
             x.output()
         else:
@@ -29,5 +29,5 @@ if __name__ == '__main__':
         print(error)
         parser.print_usage()
     except:
-        print("Something else went wrong")
+       print("Something else went wrong")
 
