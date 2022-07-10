@@ -48,7 +48,7 @@ class Folder:
                     self.res[self.fileList[item].nameLower] = [self.fileList[item]]
             print('All duplicates found')
         else:
-            for item in range(len(self.fileList) - 1):
+            for item in range(len(self.fileList)):
                 if self.res.get(self.fileList[item].nameLower):
                     self.res[self.fileList[item].nameLower].append(self.fileList[item])
                 else:
