@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-
-import FiF
 from FiF import Folder
 
 parser = argparse.ArgumentParser(
