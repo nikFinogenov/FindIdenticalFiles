@@ -5,7 +5,7 @@ COPY FiF.py ./
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN python testFif.py ts
+RUN python testFif.py
 
 FROM tests as main-part
 ENV options ""
