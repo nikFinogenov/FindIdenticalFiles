@@ -12,12 +12,14 @@ def listdir_nohidden(path, args):
             dirList.append(f'{path}/{f}')
     return dirList
 
+
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
 
 class File:
     def __init__(self, path):
@@ -26,10 +28,13 @@ class File:
         self.creationTime = datetime.fromtimestamp(os.path.getmtime(path))
         self.nameLower = self.name.lower()
 
+
 class Folder:
     fileList = []
     folderList = []
+
     def __init__(self, path, args):
+        self.res = {}
         self.path = path
         for item in listdir_nohidden(path, args):
             if os.path.isdir(item):
@@ -38,7 +43,6 @@ class Folder:
                 self.fileList.append(File(f'{path}/{os.path.basename(item)}'))
 
     def find_dupl(self, args):
-        self.res = {}
         if not args.silent:
             print('looking for duplicates started')
             for item in tqdm(range(len(self.fileList))):
@@ -61,12 +65,12 @@ class Folder:
                     print(i.name, args.delimiter, i.path, args.delimiter, md5(i.path), args.delimiter, i.creationTime)
 
     def output(self):
-        t = Texttable()
-        t.set_cols_width([15, 50, 40, 20])
-        t.add_row(["File name", "Path", "Md5", "Creation Time"])
+        texttable = Texttable()
+        texttable.set_cols_width([15, 50, 40, 20])
+        texttable.add_row(["File name", "Path", "Md5", "Creation Time"])
         for value in self.res.values():
             if len(value) > 2:
                 for i in value:
-                    t.add_row([i.name, i.path, md5(i.path), i.creationTime])
-        print(t.draw())
+                    texttable.add_row([i.name, i.path, md5(i.path), i.creationTime])
+        print(texttable.draw())
 

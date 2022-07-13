@@ -1,6 +1,6 @@
 This program allows you to find identical files in your directory. 
 ###To run program execute "main.py" and give working directory
-python main.py [OPTIONS] [PATH] [OPTIONS]
+python main.py [OPTIONS] [PATH]
 ###Options
   -h, --help            show this help message and exit\
   -i, --hidden          include hidden files\
@@ -15,6 +15,6 @@ python main.py [OPTIONS] [PATH] [OPTIONS]
 docker build -t [BUILD-NAME] .
 
 ###To run docker container you need to run this command, inner directory must be named "mounted"
-docker run -it --name [CONTAINER-NAME] -v [PATH]:/mounted [BUILD-NAME] 
+docker run -it --rm --name [CONTAINER-NAME] -e options="[OPTIONS]" -v [PATH]:/mounted [BUILD-NAME] 
 
 if you need to run container with some options, please update dockerfile yourself

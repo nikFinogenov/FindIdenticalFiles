@@ -28,6 +28,8 @@ if __name__ == '__main__':
     except FileNotFoundError as error:
         print(error)
         parser.print_usage()
-    except:
-       print("Something else went wrong")
+    except Exception as error:
+       print(error)
+
+
 
